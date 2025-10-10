@@ -45,7 +45,7 @@ if __name__ == "__main__":
     np.random.seed(20828220)
 
     X_original = [[0, 0], [0, 1], [1, 0], [1, 1]]
-    y_original = [0, 0, 1, 1]
+    y_original = [0, 0, 0, 1]
     X_new = [[-0.5, 0.5], [-0.2, -0.2], [1.2, 0.2], [1.2, 1.2]]
     y_new = [0, 0, 1, 1]
     X = X_original + X_new
