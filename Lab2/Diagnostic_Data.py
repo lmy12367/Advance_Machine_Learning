@@ -97,13 +97,14 @@ if __name__ == '__main__':
             print(f'Epoch {epoch}, Average Loss: {avg_loss:.4f}')
 
     plt.figure(figsize=(10, 6))
-    plt.plot(epochs, costs)
+    plt.plot(epochs, costs, color='blue', linewidth=2)
     plt.title('Training Loss')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("train_loss.png", dpi=300)
     plt.show()
-    plt.savefig("train_accuracy.png")
 
     train_accuracy = evaluate_model(model, train_loader, device)
     print(f'训练准确率: {train_accuracy:.2f}%')

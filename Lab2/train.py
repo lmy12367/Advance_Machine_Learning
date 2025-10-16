@@ -18,7 +18,7 @@ transform = transforms.Compose([
 train_dataset = datasets.MNIST(
     root="./data",
     train=True,
-    download=False,
+    download=True,
     transform=transform
 )
 train_loader = DataLoader(dataset=train_dataset,
@@ -28,7 +28,7 @@ train_loader = DataLoader(dataset=train_dataset,
 test_dataset = datasets.MNIST(
     root='./data',
     train=False,
-    download=False,
+    download=True,
     transform=transform)
 
 test_loader = DataLoader(dataset=test_dataset,
@@ -89,16 +89,21 @@ if __name__ == '__main__':
     epoch_list = []
     acc_list = []
 
-    for epoch in range(1):
+    for epoch in range(10):
         train(epoch)
         acc = test()
-        epoch_list.append(epoch)
+        epoch_list.append(epoch + 1)
         acc_list.append(acc)
 
     save_model(model)
 
-    plt.plot(epoch_list, acc_list)
-    plt.xlabel('epoch')
-    plt.ylabel('accuracy')
+    plt.figure(figsize=(10, 6))
+    plt.plot(epoch_list, acc_list, marker='o', color='blue', linewidth=2)
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy (%)')
+    plt.title('Test Accuracy vs. Epoch')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("train_acc_Mnist.png", dpi=300)
     plt.show()
-    plt.savefig("Minist_train")
+
