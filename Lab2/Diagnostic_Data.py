@@ -1,9 +1,9 @@
-import torch
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import StandardScaler
 import torch.nn as nn
 import matplotlib.pyplot as plt
+import torch
 
 
 class Diabetees_Dataset(Dataset):
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='min', factor=0.5, patience=10, verbose=True)
 
     epochs = []
-    costs = []
+    accuracies = []
 
     for epoch in range(100):
         epochs.append(epoch)
@@ -90,21 +90,23 @@ if __name__ == '__main__':
             loss_num += loss.item()
 
         avg_loss = loss_num / len(train_loader)
-        costs.append(avg_loss)
         scheduler.step(avg_loss)
 
+        train_accuracy = evaluate_model(model, train_loader, device)
+        accuracies.append(train_accuracy)
+
         if epoch % 10 == 0:
-            print(f'Epoch {epoch}, Average Loss: {avg_loss:.4f}')
+            print(f'Epoch {epoch}, Average Loss: {avg_loss:.4f}, Accuracy: {train_accuracy:.2f}%')
 
     plt.figure(figsize=(10, 6))
-    plt.plot(epochs, costs, color='blue', linewidth=2)
-    plt.title('Training Loss')
-    plt.ylabel('Loss')
+    plt.plot(epochs, accuracies, color='blue', linewidth=2)
+    plt.title('Training Accuracy')
+    plt.ylabel('Accuracy (%)')
     plt.xlabel('Epoch')
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("train_loss.png", dpi=300)
+    plt.savefig("train_accuracy.png", dpi=300)
     plt.show()
 
-    train_accuracy = evaluate_model(model, train_loader, device)
-    print(f'训练准确率: {train_accuracy:.2f}%')
+    final_accuracy = evaluate_model(model, train_loader, device)
+    print(f'训练准确率: {final_accuracy:.2f}%')
